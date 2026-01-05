@@ -1,0 +1,45 @@
+#!/usr/sbin/nft -f
+
+# =========================================
+# Sample nftables rules for nft-sidecar
+# Purpose:
+#   - Allow ALL traffic on eth0
+#   - Drop ALL traffic on other interfaces
+#   - Sample only (NOT for production use)
+# =========================================
+
+flush ruleset
+
+table inet filter {
+
+  chain input {
+    type filter hook input priority 0;
+    policy drop;
+
+    # Allow loopback
+    iif "lo" accept
+
+    # Allow all traffic coming from eth0
+    iif "eth0" accept
+  }
+
+  chain output {
+    type filter hook output priority 0;
+    policy drop;
+
+    # Allow loopback
+    oif "lo" accept
+
+    # Allow all traffic going out via eth0
+    oif "eth0" accept
+  }
+
+  chain forward {
+    type filter hook forward priority 0;
+    policy drop;
+
+    # Allow forwarding fully on eth0
+    iif "eth0" accept
+    oif "eth0" accept
+  }
+}
