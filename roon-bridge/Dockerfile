@@ -19,7 +19,7 @@ RUN apt-get update -q && \
     apt-get install --no-install-recommends -y -q \
         ca-certificates \
         ffmpeg \
-        libasound2 \
+        libasound2t64 \
         alsa-utils \
         libicu-dev \
         curl \
