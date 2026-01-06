@@ -13,7 +13,7 @@ RUN echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d
 RUN apt-get update && \
     apt-get install -y isc-dhcp-server && \
     apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+    rm -rf /var/lib/apt/lists/* /usr/share/doc /usr/share/man /var/cache/*
 
 # Set environment variables
 ENV LANG en_US.utf8
