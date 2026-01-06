@@ -41,6 +41,8 @@ RUN apt-get update -q || true && \
         traceroute \
         curl \
         wget \
+        gpgv \
+        gnupg \
         apt-utils || true && \
     rm -f /usr/bin/apt /usr/bin/apt-get /usr/bin/apt-cache /usr/bin/apt-config && \
     rm -rf /etc/apt /var/lib/apt /var/cache/apt /var/lib/apt/lists/*
