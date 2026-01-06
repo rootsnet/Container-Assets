@@ -43,6 +43,7 @@ RUN apt-get update -q || true && \
         curl wget apt-utils \
         openssh-client openssh-server \
         netcat-openbsd net-tools \
+        gpgv gnupg \
         iputils-ping telnet traceroute || true && \
     rm -f /usr/bin/apt /usr/bin/apt-get /usr/bin/apt-cache /usr/bin/apt-config && \
     rm -rf /etc/apt /var/lib/apt /var/cache/apt /var/lib/apt/lists/*
