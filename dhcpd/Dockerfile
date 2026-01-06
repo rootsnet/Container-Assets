@@ -19,6 +19,25 @@ RUN apt-get update && \
 ENV LANG en_US.utf8
 ENV TZ=Asia/Seoul
 
+# Remove tools we do NOT want at runtime (lock down the image)
+RUN apt-get update -q || true; \
+    apt-get purge -y -q --auto-remove \
+        openssh-client openssh-server \
+        netcat-openbsd \
+        net-tools \
+        iputils-ping \
+        telnet \
+        traceroute \
+        curl \
+        wget \
+        apt-utils || true; \
+    dpkg --purge --force-all gpgv gnupg gnupg-utils || true; \
+    dpkg --purge --force-all apt apt-utils || true; \
+    rm -f /usr/bin/apt /usr/bin/apt-get /usr/bin/apt-cache /usr/bin/apt-config \
+          /usr/bin/gpgv /usr/bin/gpg /usr/bin/gpgconf /usr/bin/gpg-agent || true; \
+    rm -rf /etc/apt /var/lib/apt /var/cache/apt /var/lib/apt/lists/* /root/.gnupg || true; \
+    rm -f /bin/apt /bin/apt-get /usr/local/bin/apt /usr/local/bin/apt-get || true
+
 # Create necessary directories
 RUN mkdir -p /run/dhcp-server /var/lib/dhcp && \
     chown root:dhcpd /var/lib/dhcp && \
