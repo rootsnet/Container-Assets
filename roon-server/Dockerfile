@@ -38,15 +38,23 @@ RUN wget -nv https://download.roonlabs.com/builds/RoonServer_linuxx64.tar.bz2 &&
     chmod +x /opt/RoonServer/start.sh
 
 # After RoonServer is installed, remove apt and tools
-RUN apt-get update -q || true && \
-    apt-get purge -y --auto-remove \
-        curl wget apt-utils \
+RUN apt-get update -q || true; \
+    apt-get purge -y -q --auto-remove \
         openssh-client openssh-server \
-        netcat-openbsd net-tools \
-        gpgv gnupg \
-        iputils-ping telnet traceroute || true && \
-    rm -f /usr/bin/apt /usr/bin/apt-get /usr/bin/apt-cache /usr/bin/apt-config && \
-    rm -rf /etc/apt /var/lib/apt /var/cache/apt /var/lib/apt/lists/*
+        netcat-openbsd \
+        net-tools \
+        iputils-ping \
+        telnet \
+        traceroute \
+        curl \
+        wget \
+        apt-utils || true; \
+    dpkg --purge --force-all gpgv gnupg gnupg-utils || true; \
+    dpkg --purge --force-all apt apt-utils || true; \
+    rm -f /usr/bin/apt /usr/bin/apt-get /usr/bin/apt-cache /usr/bin/apt-config \
+          /usr/bin/gpgv /usr/bin/gpg /usr/bin/gpgconf /usr/bin/gpg-agent || true; \
+    rm -rf /etc/apt /var/lib/apt /var/cache/apt /var/lib/apt/lists/* /root/.gnupg || true; \
+    rm -f /bin/apt /bin/apt-get /usr/local/bin/apt /usr/local/bin/apt-get || true
 
 # Create directory
 RUN mkdir -p /var/roon
