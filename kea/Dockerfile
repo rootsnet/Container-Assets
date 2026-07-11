@@ -20,10 +20,12 @@ RUN apt-get update && \
 # securityContext capability adds do NOT become effective for a non-root exec
 # (the kernel clears the effective set on execve of a non-root process), so we
 # bake the caps as file capabilities (permitted+effective, =ep) onto the
-# binaries themselves. These xattrs survive the setuid-bit strip in the
-# lockdown step below (chmod -s does not touch security.capability).
-RUN setcap 'cap_net_bind_service,cap_net_raw,cap_net_admin=ep' /usr/sbin/kea-dhcp4 && \
-    setcap 'cap_net_bind_service,cap_net_raw,cap_net_admin=ep' /usr/sbin/kea-dhcp6 && \
+# binaries themselves. Keep this list aligned with the pod capability bounding
+# set. Do NOT include cap_net_admin unless the deployment also adds NET_ADMIN;
+# otherwise execve fails with EPERM. These xattrs survive the setuid-bit strip
+# in the lockdown step below (chmod -s does not touch security.capability).
+RUN setcap 'cap_net_bind_service,cap_net_raw=ep' /usr/sbin/kea-dhcp4 && \
+    setcap 'cap_net_bind_service,cap_net_raw=ep' /usr/sbin/kea-dhcp6 && \
     getcap /usr/sbin/kea-dhcp4 /usr/sbin/kea-dhcp6
 
 # Set environment variables
