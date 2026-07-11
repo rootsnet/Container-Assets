@@ -11,7 +11,7 @@ RUN ln -sf /bin/true /sbin/initctl
 RUN echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d
 
 RUN apt-get update && \
-    apt-get install -y kea-dhcp4-server kea-dhcp6-server && \
+    apt-get install -y kea-dhcp4-server kea-dhcp6-server kea-ctrl-agent && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /usr/share/doc /usr/share/man /var/cache/*
 
